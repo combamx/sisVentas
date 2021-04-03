@@ -22,7 +22,7 @@ namespace WSVentas.Controllers
             {                
                 using (VentaRealContext db = new VentaRealContext())
                 {
-                    var lst = db.Clientes.ToList();
+                    var lst = db.Clientes.OrderByDescending(d => d.Id).ToList();
                     oRespuesta.Exito = 200;
                     oRespuesta.Data = lst;                    
                 }
