@@ -16,6 +16,8 @@ namespace WSVentas
 {
     public class Startup
     {
+        readonly string AllowSpecificOrigins = "_AllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +28,15 @@ namespace WSVentas
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Configuracion Seguridad
+            services.AddCors(options => {
+                options.AddPolicy(name: AllowSpecificOrigins, 
+                builder =>
+                {
+                    builder.WithHeaders("*");
+                    builder.WithOrigins("*");
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,6 +58,9 @@ namespace WSVentas
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Configurar seguridad
+            app.UseCors(AllowSpecificOrigins);
 
             app.UseAuthorization();
 
